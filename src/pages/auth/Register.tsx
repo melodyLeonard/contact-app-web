@@ -4,7 +4,7 @@ import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 import Spinner from "../../components/Spinner";
 import { SIGNUP } from '../../apollo/mutation/user';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [variables, setVariables] = useState({
@@ -14,6 +14,7 @@ const Register = () => {
     email: "",
   });
   const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
 
   const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
     setVariables({
@@ -25,13 +26,14 @@ const Register = () => {
 
   const [registerUser, { loading }] = useMutation(SIGNUP, {
     update(_, res) {
+      navigate("/login")
     },
   });
 
   const onSubmitHandler = (e:SyntheticEvent) => {
     e.preventDefault();
 
-    registerUser({ variables });
+    registerUser({ variables: {input: variables}  });
   };
 
   return (
@@ -59,9 +61,6 @@ const Register = () => {
                 value={email}
                 onChange={onChangeHandler}
                 type="email"
-                className={
-                  true ? "is-invalid" : ""
-                }
               />
             </Form.Group>
 
@@ -72,9 +71,6 @@ const Register = () => {
                 value={firstName}
                 type="text"
                 onChange={onChangeHandler}
-                className={
-                  true ? "is-invalid" : ""
-                }
               />
             </Form.Group>
 
@@ -85,9 +81,6 @@ const Register = () => {
                 value={lastName}
                 type="text"
                 onChange={onChangeHandler}
-                className={
-                  true ? "is-invalid" : ""
-                }
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
@@ -97,9 +90,6 @@ const Register = () => {
                 value={password}
                 type="password"
                 onChange={onChangeHandler}
-                className={
-                  true ? "is-invalid" : ""
-                }
               />
             </Form.Group>
 

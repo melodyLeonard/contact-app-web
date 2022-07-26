@@ -22,7 +22,7 @@ export const makeStore = (
           saveToStorage(name, store);
         }
       }
-    }, [store]);
+    }, [isInitialized, store]);
 
     const asyncHack = async () => {
       const newState = await retreiveFromStorage(name);

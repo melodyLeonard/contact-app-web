@@ -1,0 +1,20 @@
+@import '~bootstrap/scss/bootstrap';
+
+.app-container {
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-container {
+  display: flex;
+}
+
+main {
+  padding: 10px;
+}

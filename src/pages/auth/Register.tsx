@@ -14,6 +14,9 @@ const Register = () => {
     email: "",
   });
   const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [variant, setVariant] = useState<string>('danger');
+  const [success, setSucess] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
@@ -25,8 +28,20 @@ const Register = () => {
   const { email, firstName, lastName, password } = variables;
 
   const [registerUser, { loading }] = useMutation(SIGNUP, {
-    update(_, res) {
-      navigate("/login")
+    update(_, {data}) {
+      setShowAlert(true);
+      setSucess(data?.signup)
+      if(data?.signup === 'Accounts successflly created, please login to view dashboard'){
+        setVariant('success')
+        setTimeout(() => {
+           setVariant('danger')
+           navigate("/login")
+        }, 5000);
+      }
+    },
+    onError: (err) => {
+     setError(err?.message)
+     setShowAlert(true);
     },
   });
 
@@ -43,12 +58,12 @@ const Register = () => {
           <div className="auth-header">
             {showAlert && (
               <Alert
-                style={{ width: "100%" }}
-                variant="danger"
+                style={{ width: "100%", maxWidth: "35rem" }}
+                variant={variant}
                 onClose={() => setShowAlert(false)}
                 dismissible
               >
-                <p className="mb-0 mt-0">{"Here is a test message"}</p>
+                <p className="mb-0 mt-0">{error || success}</p>
               </Alert>
             )}
             <h1 className="text-center">Signup</h1>
